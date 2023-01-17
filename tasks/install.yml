@@ -1,0 +1,23 @@
+---
+- name: Ensure prometheus-node-exporter image is pulled
+  community.docker.docker_image:
+    name: "{{ prometheus_node_exporter_docker_image }}"
+    source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
+    force_source: "{{ prometheus_node_exporter_docker_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
+    force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else prometheus_node_exporter_docker_image_force_pull }}"
+  register: result
+  retries: "{{ devture_playbook_help_container_retries_count }}"
+  delay: "{{ devture_playbook_help_container_retries_delay }}"
+  until: result is not failed
+
+
+- name: Ensure prometheus-node-exporter container network is created
+  community.general.docker_network:
+    name: "{{ prometheus_node_exporter_container_network }}"
+    driver: bridge
+
+- name: Ensure prometheus-node-exporter systemd service installed
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/prometheus-node-exporter.service.j2"
+    dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ prometheus_node_exporter_identifier }}.service"
+    mode: 0644

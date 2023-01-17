@@ -1,0 +1,29 @@
+---
+# Project source code URL: https://github.com/prometheus/node_exporter
+
+prometheus_node_exporter_enabled: true
+prometheus_node_exporter_identifier: prometheus-node-exporter
+prometheus_node_exporter_uid: ~
+prometheus_node_exporter_gid: ~
+prometheus_node_exporter_container_network: "{{ prometheus_node_exporter_identifier }}"
+
+prometheus_node_exporter_version: v1.5.0
+prometheus_node_exporter_docker_image: "prom/node-exporter:{{ prometheus_node_exporter_version }}"
+prometheus_node_exporter_docker_image_name_prefix: "docker.io/"
+prometheus_node_exporter_docker_image_force_pull: "{{ prometheus_node_exporter_docker_image.endswith(':latest') }}"
+
+# A list of extra arguments to pass to the container
+prometheus_node_exporter_container_extra_arguments: []
+
+# A list of extra arguments to pass to the node_exporter process
+prometheus_node_exporter_process_extra_arguments: []
+
+# List of systemd services that matrix-prometheus.service depends on
+prometheus_node_exporter_systemd_required_services_list: ['docker.service']
+
+# List of systemd services that matrix-prometheus.service wants
+prometheus_node_exporter_systemd_wanted_services_list: []
+
+# Controls whether the matrix-prometheus container exposes its HTTP port (tcp/9100 in the container).
+# Takes an "<ip>:<port>" value (e.g. "127.0.0.1:9100"), just a port number or empty string to not expose.
+prometheus_node_exporter_container_http_host_bind_port: ''
