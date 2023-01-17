@@ -16,7 +16,7 @@ Environment="HOME={{ devture_systemd_docker_base_systemd_unit_home_path }}"
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} kill {{ prometheus_node_exporter_identifier }} 2>/dev/null || true'
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ prometheus_node_exporter_identifier }} 2>/dev/null || true'
 
-ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} run --rm --name {{ prometheus_node_exporter_identifier }} \
+ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create --rm --name {{ prometheus_node_exporter_identifier }} \
 			--log-driver=none \
 			--user={{ prometheus_node_exporter_uid }}:{{ prometheus_node_exporter_gid }} \
 			--cap-drop=ALL \

@@ -1,5 +1,6 @@
 {% if prometheus_node_exporter_container_labels_traefik_enabled %}
 traefik.enable=true
+{% endif %}
 
 {% if prometheus_node_exporter_container_labels_traefik_docker_network %}
 traefik.docker.network={{ prometheus_node_exporter_container_labels_traefik_docker_network }}
@@ -8,7 +9,7 @@ traefik.docker.network={{ prometheus_node_exporter_container_labels_traefik_dock
 
 {# Middlewares #}
 {% if prometheus_node_exporter_basicauth_enabled %}
-traefik.http.middlewares.{{ prometheus_node_exporter_identifier }}-auth.basicauth.users="{{ lookup('ansible.builtin.file', prometheus_node_exporter_basicauth_file) }}
+traefik.http.middlewares.{{ prometheus_node_exporter_identifier }}-auth.basicauth.users="{{ lookup('ansible.builtin.file', prometheus_node_exporter_basicauth_file_tmp) | replace('$', '$$') }}"
 {% endif %}
 
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.rule={{ prometheus_node_exporter_container_labels_traefik_rule }}
