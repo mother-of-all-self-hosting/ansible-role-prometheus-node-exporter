@@ -8,14 +8,14 @@ traefik.docker.network={{ prometheus_node_exporter_container_labels_traefik_dock
 
 
 {# Middlewares #}
+traefik.http.middlewares.{{ prometheus_node_exporter_identifier }}-replacepath.replacepath.path=/metrics
 {% if prometheus_node_exporter_basicauth_enabled %}
-traefik.http.middlewares.{{ prometheus_node_exporter_identifier }}-auth.basicauth.users="{{ lookup('ansible.builtin.file', prometheus_node_exporter_basicauth_file_tmp) | replace('$', '$$') }}"
+traefik.http.middlewares.{{ prometheus_node_exporter_identifier }}-auth.basicauth.users={{ lookup('ansible.builtin.file', prometheus_node_exporter_basicauth_file_tmp) }}
 {% endif %}
 
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.rule={{ prometheus_node_exporter_container_labels_traefik_rule }}
-{% if prometheus_node_exporter_basicauth_enabled %}
-traefik.http.routers.{{ prometheus_node_exporter_identifier }}.middlewares={{ prometheus_node_exporter_identifier }}-auth
-{% endif %}
+traefik.http.routers.{{ prometheus_node_exporter_identifier }}.middlewares={{ prometheus_node_exporter_identifier }}-replacepath{% if prometheus_node_exporter_basicauth_enabled %},{{ prometheus_node_exporter_identifier }}-auth{% endif %}
+
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.service={{ prometheus_node_exporter_identifier }}
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.tls.certResolver={{ prometheus_node_exporter_container_labels_traefik_tls_certResolver }}
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.entrypoints={{ prometheus_node_exporter_container_labels_traefik_entrypoints }}
