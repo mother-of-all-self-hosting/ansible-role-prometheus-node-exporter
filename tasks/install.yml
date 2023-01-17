@@ -26,6 +26,14 @@
     group: "{{ prometheus_node_exporter_gid }}"
     mode: 0640
 
+- name: Ensure prometheus-node-exporter auth file is created
+  community.general.htpasswd:
+    path: "{{ prometheus_node_exporter_basicauth_file }}"
+    name: "{{ prometheus_node_exporter_basicauth_user }}"
+    password: "{{ prometheus_node_exporter_basicauth_password }}"
+    owner: "{{ prometheus_node_exporter_uid }}"
+    group: "{{ prometheus_node_exporter_gid }}"
+    mode: 0640
 
 - name: Ensure prometheus-node-exporter container network is created
   community.general.docker_network:

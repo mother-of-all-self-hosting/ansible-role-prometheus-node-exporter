@@ -9,9 +9,14 @@ prometheus_node_exporter_server_fqn: ''
 prometheus_node_exporter_path_prefix: "/metrics/node-exporter"
 
 prometheus_node_exporter_version: v1.5.0
-prometheus_node_exporter_docker_image: "prom/node-exporter:{{ prometheus_node_exporter_version }}"
+prometheus_node_exporter_docker_image: "{{ prometheus_node_exporter_docker_image_name_prefix }}prom/node-exporter:{{ prometheus_node_exporter_version }}"
 prometheus_node_exporter_docker_image_name_prefix: "docker.io/"
 prometheus_node_exporter_docker_image_force_pull: "{{ prometheus_node_exporter_docker_image.endswith(':latest') }}"
+
+prometheus_node_exporter_basicauth_enabled: false
+prometheus_node_exporter_basicauth_file: "{{ prometheus_node_exporter_base_path }}/htpasswd"
+prometheus_node_exporter_basicauth_user: ''
+prometheus_node_exporter_basicauth_password: ''
 
 # A path on host where all related files will be saved
 prometheus_node_exporter_base_path: "/{{ prometheus_node_exporter_identifier }}"
@@ -39,15 +44,15 @@ prometheus_node_exporter_container_extra_arguments: []
 #   - "--collector.logind"
 #
 # Note: the above is just an example. Various collectors may require various tweaks to be able to run.
-# Running the systemd collector requires the following `matrix_prometheus_node_exporter_process_extra_arguments`:
+# Running the systemd collector requires the following `prometheus_node_exporter_process_extra_arguments`:
 # - the socket to be mounted as well (`--mount type=bind,src=/var/run/dbus/system_bus_socket,dst=/var/run/dbus/system_bus_socket,ro,bind-propagation=rslave`)
 # - (on AppArmor-based distros) disabling AppArmor protection (`--security-opt apparmor=unconfined`)
 prometheus_node_exporter_process_extra_arguments: []
 
-# List of systemd services that matrix-prometheus.service depends on
+# List of systemd services that prometheus-node-exporter.service depends on
 prometheus_node_exporter_systemd_required_services_list: ['docker.service']
 
-# List of systemd services that matrix-prometheus.service wants
+# List of systemd services that prometheus-node-exporter.service wants
 prometheus_node_exporter_systemd_wanted_services_list: []
 
 # prometheus_node_exporter_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
@@ -72,6 +77,6 @@ prometheus_node_exporter_container_labels_additional_labels: ''
 # A port number in the container
 prometheus_node_exporter_container_http_port: 9100
 
-# Controls whether the matrix-prometheus container exposes its HTTP port (tcp/9100 in the container).
+# Controls whether the prometheus-node-exporter container exposes its HTTP port (tcp/9100 in the container).
 # Takes an "<ip>:<port>" value (e.g. "127.0.0.1:9100"), just a port number or empty string to not expose.
 prometheus_node_exporter_container_http_host_bind_port: ''
