@@ -6,16 +6,30 @@ prometheus_node_exporter_identifier: prometheus-node-exporter
 prometheus_node_exporter_uid: ~
 prometheus_node_exporter_gid: ~
 prometheus_node_exporter_container_network: "{{ prometheus_node_exporter_identifier }}"
+prometheus_node_exporter_path_prefix: "/metrics/node-exporter"
 
 prometheus_node_exporter_version: v1.5.0
 prometheus_node_exporter_docker_image: "prom/node-exporter:{{ prometheus_node_exporter_version }}"
 prometheus_node_exporter_docker_image_name_prefix: "docker.io/"
 prometheus_node_exporter_docker_image_force_pull: "{{ prometheus_node_exporter_docker_image.endswith(':latest') }}"
 
+# A path on host where all related files will be saved
+prometheus_node_exporter_base_path: "/{{ prometheus_node_exporter_identifier }}"
+
 # A list of extra arguments to pass to the container
 prometheus_node_exporter_container_extra_arguments: []
 
 # A list of extra arguments to pass to the node_exporter process
+#
+# Example:
+# prometheus_node_exporter_process_extra_arguments:
+#   - "--collector.systemd"
+#   - "--collector.logind"
+#
+# Note: the above is just an example. Various collectors may require various tweaks to be able to run.
+# Running the systemd collector requires the following `matrix_prometheus_node_exporter_process_extra_arguments`:
+# - the socket to be mounted as well (`--mount type=bind,src=/var/run/dbus/system_bus_socket,dst=/var/run/dbus/system_bus_socket,ro,bind-propagation=rslave`)
+# - (on AppArmor-based distros) disabling AppArmor protection (`--security-opt apparmor=unconfined`)
 prometheus_node_exporter_process_extra_arguments: []
 
 # List of systemd services that matrix-prometheus.service depends on
@@ -23,6 +37,28 @@ prometheus_node_exporter_systemd_required_services_list: ['docker.service']
 
 # List of systemd services that matrix-prometheus.service wants
 prometheus_node_exporter_systemd_wanted_services_list: []
+
+# prometheus_node_exporter_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
+# See `../templates/labels.j2` for details.
+#
+# To inject your own other container labels, see `prometheus_node_exporter_container_labels_additional_labels`.
+prometheus_node_exporter_container_labels_traefik_enabled: true
+prometheus_node_exporter_container_labels_traefik_docker_network: "{{ prometheus_node_exporter_container_network }}"
+prometheus_node_exporter_container_labels_traefik_rule: "PathPrefix(`{{ prometheus_node_exporter_path_prefix | quote }}`)"
+prometheus_node_exporter_container_labels_traefik_entrypoints: web-secure
+prometheus_node_exporter_container_labels_traefik_tls_certResolver: default  # noqa var-naming
+
+# prometheus_node_exporter_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
+# See `../templates/labels.j2` for details.
+#
+# Example:
+# prometheus_node_exporter_container_labels_additional_labels: |
+#   my.label=1
+#   another.label="here"
+prometheus_node_exporter_container_labels_additional_labels: ''
+
+# A port number in the container
+prometheus_node_exporter_container_http_port: 9100
 
 # Controls whether the matrix-prometheus container exposes its HTTP port (tcp/9100 in the container).
 # Takes an "<ip>:<port>" value (e.g. "127.0.0.1:9100"), just a port number or empty string to not expose.

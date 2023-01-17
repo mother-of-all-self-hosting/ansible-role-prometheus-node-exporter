@@ -1,0 +1,28 @@
+{% if prometheus_node_exporter_container_labels_traefik_enabled %}
+traefik.enable=true
+
+{% if prometheus_node_exporter_container_labels_traefik_docker_network %}
+traefik.docker.network={{ prometheus_node_exporter_container_labels_traefik_docker_network }}
+{% endif %}
+
+
+{# Middlewares #}
+{% if prometheus_node_exporter_path_prefix != '/' %}
+{#
+    This redirect-slash middleware redirects a custom prefix (e.g. `/passwords`) which
+    has no trailing slash to the same thing, but with a trailing slash (e.g. `/passwords/`).
+#}
+traefik.http.middlewares.{{ prometheus_node_exporter_identifier }}-no-trailing-slash-redirect.redirectregex.regex=^(https?)://([^/]+){{ prometheus_node_exporter_path_prefix | quote }}$
+traefik.http.middlewares.{{ prometheus_node_exporter_identifier }}-no-trailing-slash-redirect.redirectregex.replacement=${1}://${2}{{ prometheus_node_exporter_path_prefix | quote }}/
+{% endif %}
+
+traefik.http.routers.{{ prometheus_node_exporter_identifier }}.rule={{ prometheus_node_exporter_container_labels_traefik_rule_ui }}
+{% if prometheus_node_exporter_path_prefix != '/' %}
+traefik.http.routers.{{ prometheus_node_exporter_identifier }}.middlewares={{ prometheus_node_exporter_identifier }}-no-trailing-slash-redirect
+{% endif %}
+traefik.http.routers.{{ prometheus_node_exporter_identifier }}.service={{ prometheus_node_exporter_identifier }}
+traefik.http.routers.{{ prometheus_node_exporter_identifier }}.tls.certResolver={{ prometheus_node_exporter_container_labels_traefik_tls_certResolver }}
+traefik.http.routers.{{ prometheus_node_exporter_identifier }}.entrypoints={{ prometheus_node_exporter_container_labels_traefik_entrypoints }}
+traefik.http.services.{{ prometheus_node_exporter_identifier }}.loadbalancer.server.port={{ prometheus_node_exporter_container_http_port }}
+
+{{ prometheus_node_exporter_container_labels_additional_labels }}

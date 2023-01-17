@@ -30,6 +30,7 @@ ExecStart={{ devture_systemd_docker_base_host_command_docker }} run --rm --name 
 			-p {{ prometheus_node_exporter_container_http_host_bind_port }}:9100 \
 			{% endif %}
 			--pid=host \
+			--label-file={{ prometheus_node_exporter_base_path }}/labels \
 			--mount type=bind,src=/,dst=/host,ro,bind-propagation=rslave \
 			{{ prometheus_node_exporter_docker_image }} \
 			--path.rootfs=/host {{ prometheus_node_exporter_process_extra_arguments|join(' ') }}
