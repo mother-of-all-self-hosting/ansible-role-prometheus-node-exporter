@@ -3,9 +3,9 @@
 
 prometheus_node_exporter_enabled: true
 prometheus_node_exporter_identifier: prometheus-node-exporter
-prometheus_node_exporter_uid: ~
-prometheus_node_exporter_gid: ~
-prometheus_node_exporter_container_network: "{{ prometheus_node_exporter_identifier }}"
+prometheus_node_exporter_uid: ''
+prometheus_node_exporter_gid: ''
+prometheus_node_exporter_server_fqn: ''
 prometheus_node_exporter_path_prefix: "/metrics/node-exporter"
 
 prometheus_node_exporter_version: v1.5.0
@@ -15,6 +15,18 @@ prometheus_node_exporter_docker_image_force_pull: "{{ prometheus_node_exporter_d
 
 # A path on host where all related files will be saved
 prometheus_node_exporter_base_path: "/{{ prometheus_node_exporter_identifier }}"
+
+# The base container network
+prometheus_node_exporter_container_network: "{{ prometheus_node_exporter_identifier }}"
+
+# A list of additional container networks that the container would be connected to.
+# The role does not create these networks, so make sure they already exist.
+#
+# Use this to expose this container to another reverse proxy, which runs in a different container network,
+# without exposing all other container services to that other reverse-proxy.
+#
+# For background, see: https://github.com/spantaleev/matrix-docker-ansible-deploy/issues/1498
+prometheus_node_exporter_container_additional_networks: []
 
 # A list of extra arguments to pass to the container
 prometheus_node_exporter_container_extra_arguments: []
@@ -44,7 +56,7 @@ prometheus_node_exporter_systemd_wanted_services_list: []
 # To inject your own other container labels, see `prometheus_node_exporter_container_labels_additional_labels`.
 prometheus_node_exporter_container_labels_traefik_enabled: true
 prometheus_node_exporter_container_labels_traefik_docker_network: "{{ prometheus_node_exporter_container_network }}"
-prometheus_node_exporter_container_labels_traefik_rule: "PathPrefix(`{{ prometheus_node_exporter_path_prefix | quote }}`)"
+prometheus_node_exporter_container_labels_traefik_rule: "Host(`{{ prometheus_node_exporter_server_fqn }}`) && PathPrefix(`{{ prometheus_node_exporter_path_prefix | quote }}`)"
 prometheus_node_exporter_container_labels_traefik_entrypoints: web-secure
 prometheus_node_exporter_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 
