@@ -16,7 +16,7 @@
       when: prometheus_node_exporter_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
 
-- name: Ensure prometheus-node-expoter is removed
+- name: Ensure prometheus-node-exporter is removed
   tags:
     - setup-all
     - setup-prometheus
