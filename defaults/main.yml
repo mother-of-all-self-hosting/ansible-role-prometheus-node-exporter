@@ -88,3 +88,8 @@ prometheus_node_exporter_container_http_port: 9100
 # Controls whether the prometheus-node-exporter container exposes its HTTP port (tcp/9100 in the container).
 # Takes an "<ip>:<port>" value (e.g. "127.0.0.1:9100"), just a port number or empty string to not expose.
 prometheus_node_exporter_container_http_host_bind_port: ''
+
+# prometheus_node_exporter_dashboard_urls contains a list of URLs with Grafana dashboard definitions for the node exporter.
+# This role doesn't make use of this variable, but you can hook this into other roles.
+prometheus_node_exporter_dashboard_urls:
+  - https://raw.githubusercontent.com/rfrail3/grafana-dashboards/master/prometheus/node-exporter-full.json
