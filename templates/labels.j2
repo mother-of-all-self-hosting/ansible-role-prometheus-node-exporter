@@ -16,7 +16,10 @@ traefik.http.routers.{{ prometheus_node_exporter_identifier }}.rule={{ prometheu
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.middlewares={{ prometheus_node_exporter_identifier }}-replacepath{% if prometheus_node_exporter_basicauth_enabled %},{{ prometheus_node_exporter_identifier }}-auth{% endif %}
 
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.service={{ prometheus_node_exporter_identifier }}
+traefik.http.routers.{{ prometheus_node_exporter_identifier }}.tls={{ prometheus_node_exporter_container_labels_traefik_tls | to_json }}
+{% if prometheus_node_exporter_container_labels_traefik_tls %}
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.tls.certResolver={{ prometheus_node_exporter_container_labels_traefik_tls_certResolver }}
+{% endif %}
 traefik.http.routers.{{ prometheus_node_exporter_identifier }}.entrypoints={{ prometheus_node_exporter_container_labels_traefik_entrypoints }}
 traefik.http.services.{{ prometheus_node_exporter_identifier }}.loadbalancer.server.port={{ prometheus_node_exporter_container_http_port }}
 {% endif %}
