@@ -1,4 +1,9 @@
 ---
+- name: Determine basicauth tmp filename
+  set_fact:
+    prometheus_node_exporter_basicauth_file_tmp: "{{ prometheus_node_exporter_basicauth_file_tmp }}_{{ inventory_hostname }}"
+  when: prometheus_node_exporter_basicauth_enabled | bool
+
 - name: Ensure prometheus-node-exporter image is pulled
   community.docker.docker_image:
     name: "{{ prometheus_node_exporter_docker_image }}"
