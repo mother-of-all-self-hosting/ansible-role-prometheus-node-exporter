@@ -5,7 +5,7 @@ prometheus_node_exporter_enabled: true
 prometheus_node_exporter_identifier: prometheus-node-exporter
 prometheus_node_exporter_uid: ''
 prometheus_node_exporter_gid: ''
-prometheus_node_exporter_server_fqn: ''
+prometheus_node_exporter_hostname: ''
 prometheus_node_exporter_path_prefix: "/metrics/node-exporter"
 
 prometheus_node_exporter_version: v1.5.0
@@ -78,7 +78,7 @@ prometheus_node_exporter_systemd_wanted_services_list: []
 # To inject your own other container labels, see `prometheus_node_exporter_container_labels_additional_labels`.
 prometheus_node_exporter_container_labels_traefik_enabled: true
 prometheus_node_exporter_container_labels_traefik_docker_network: "{{ prometheus_node_exporter_container_network }}"
-prometheus_node_exporter_container_labels_traefik_rule: "Host(`{{ prometheus_node_exporter_server_fqn }}`) && PathPrefix(`{{ prometheus_node_exporter_path_prefix | quote }}`)"
+prometheus_node_exporter_container_labels_traefik_rule: "Host(`{{ prometheus_node_exporter_hostname }}`) && PathPrefix(`{{ prometheus_node_exporter_path_prefix | quote }}`)"
 prometheus_node_exporter_container_labels_traefik_entrypoints: web-secure
 prometheus_node_exporter_container_labels_traefik_tls: "{{ prometheus_node_exporter_container_labels_traefik_entrypoints != 'web' }}"
 prometheus_node_exporter_container_labels_traefik_tls_certResolver: default  # noqa var-naming

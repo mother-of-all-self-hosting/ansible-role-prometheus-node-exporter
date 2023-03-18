@@ -7,6 +7,6 @@
   with_items:
     - prometheus_node_exporter_uid
     - prometheus_node_exporter_gid
-    - prometheus_node_exporter_server_fqn
+    - prometheus_node_exporter_hostname
     - prometheus_node_exporter_path_prefix
     - prometheus_node_exporter_container_network
