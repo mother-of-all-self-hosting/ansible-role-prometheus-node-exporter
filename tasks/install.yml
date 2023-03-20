@@ -1,27 +1,17 @@
 ---
-- name: Determine basicauth tmp filename
-  set_fact:
-    prometheus_node_exporter_basicauth_file_tmp: "{{ prometheus_node_exporter_basicauth_file_tmp }}_{{ inventory_hostname }}"
-  when: prometheus_node_exporter_basicauth_enabled | bool
 
-- name: Ensure prometheus-node-exporter image is pulled
-  community.docker.docker_image:
-    name: "{{ prometheus_node_exporter_docker_image }}"
-    source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
-    force_source: "{{ prometheus_node_exporter_docker_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
-    force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else prometheus_node_exporter_docker_image_force_pull }}"
-  register: result
-  retries: "{{ devture_playbook_help_container_retries_count }}"
-  delay: "{{ devture_playbook_help_container_retries_delay }}"
-  until: result is not failed
-
-- name: Ensure prometheus-node-exporter path exist
+- name: Ensure prometheus-node-exporter base path exists
   ansible.builtin.file:
     path: "{{ prometheus_node_exporter_base_path }}"
     state: directory
     mode: 0700
     owner: "{{ prometheus_node_exporter_uid }}"
     group: "{{ prometheus_node_exporter_gid }}"
+
+- name: Determine basicauth tmp filename
+  set_fact:
+    prometheus_node_exporter_basicauth_file_tmp: "{{ prometheus_node_exporter_basicauth_file_tmp }}_{{ inventory_hostname }}"
+  when: prometheus_node_exporter_basicauth_enabled | bool
 
 - name: Generate basic auth file
   community.general.htpasswd:
@@ -61,6 +51,17 @@
   debug:
     msg: "login={{ prometheus_node_exporter_basicauth_user }} password={{ prometheus_node_exporter_basicauth_password }}"
   when: prometheus_node_exporter_basicauth_enabled | bool and prometheus_node_exporter_basicauth_print | bool
+
+- name: Ensure prometheus-node-exporter image is pulled
+  community.docker.docker_image:
+    name: "{{ prometheus_node_exporter_docker_image }}"
+    source: "{{ 'pull' if ansible_version.major > 2 or ansible_version.minor > 7 else omit }}"
+    force_source: "{{ prometheus_node_exporter_docker_image_force_pull if ansible_version.major > 2 or ansible_version.minor >= 8 else omit }}"
+    force: "{{ omit if ansible_version.major > 2 or ansible_version.minor >= 8 else prometheus_node_exporter_docker_image_force_pull }}"
+  register: result
+  retries: "{{ devture_playbook_help_container_retries_count }}"
+  delay: "{{ devture_playbook_help_container_retries_delay }}"
+  until: result is not failed
 
 - name: Ensure prometheus-node-exporter container network is created
   community.general.docker_network:
