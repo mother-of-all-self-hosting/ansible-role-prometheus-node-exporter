@@ -18,8 +18,6 @@
   tags:
     - setup-all
     - setup-prometheus-node-exporter
-    - install-all
-    - install-prometheus-node-exporter
   block:
     - name: Include prometheus-node-exporter removal tasks
       when: not prometheus_node_exporter_enabled | bool
