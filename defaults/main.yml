@@ -17,6 +17,7 @@ prometheus_node_exporter_docker_image_name_prefix: "docker.io/"
 prometheus_node_exporter_docker_image_force_pull: "{{ prometheus_node_exporter_docker_image.endswith(':latest') }}"
 
 # enable basic auth
+# Also see `prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_enabled` for an alternative implementation.
 prometheus_node_exporter_basicauth_enabled: false
 # temporary file name on the host that runs ansible
 prometheus_node_exporter_basicauth_file_tmp: "/tmp/ansible_htpasswd"
@@ -88,6 +89,9 @@ prometheus_node_exporter_container_labels_traefik_rule: "Host(`{{ prometheus_nod
 prometheus_node_exporter_container_labels_traefik_entrypoints: web-secure
 prometheus_node_exporter_container_labels_traefik_tls: "{{ prometheus_node_exporter_container_labels_traefik_entrypoints != 'web' }}"
 prometheus_node_exporter_container_labels_traefik_tls_certResolver: default  # noqa var-naming
+prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_enabled: false
+# See: https://doc.traefik.io/traefik/middlewares/http/basicauth/#users
+prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_users: ''
 
 # prometheus_node_exporter_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
 # See `../templates/labels.j2` for details.
