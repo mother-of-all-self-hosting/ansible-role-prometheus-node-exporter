@@ -16,20 +16,6 @@ prometheus_node_exporter_docker_image: "{{ prometheus_node_exporter_docker_image
 prometheus_node_exporter_docker_image_name_prefix: "docker.io/"
 prometheus_node_exporter_docker_image_force_pull: "{{ prometheus_node_exporter_docker_image.endswith(':latest') }}"
 
-# enable basic auth
-# Also see `prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_enabled` for an alternative implementation.
-prometheus_node_exporter_basicauth_enabled: false
-# temporary file name on the host that runs ansible
-prometheus_node_exporter_basicauth_file_tmp: "/tmp/ansible_htpasswd"
-# target basic auth file on the server
-prometheus_node_exporter_basicauth_file: "{{ prometheus_node_exporter_base_path }}/htpasswd"
-# print username and password in the play log, useful when they generated automatically
-prometheus_node_exporter_basicauth_print: false
-# username
-prometheus_node_exporter_basicauth_user: ''
-# password
-prometheus_node_exporter_basicauth_password: ''
-
 # A path on host where all related files will be saved
 prometheus_node_exporter_base_path: "/{{ prometheus_node_exporter_identifier }}"
 

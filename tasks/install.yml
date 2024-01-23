@@ -8,20 +8,6 @@
     owner: "{{ prometheus_node_exporter_uid }}"
     group: "{{ prometheus_node_exporter_gid }}"
 
-- name: Determine basicauth tmp filename
-  set_fact:
-    prometheus_node_exporter_basicauth_file_tmp: "{{ prometheus_node_exporter_basicauth_file_tmp }}_{{ inventory_hostname }}"
-  when: prometheus_node_exporter_basicauth_enabled | bool
-
-- name: Generate basic auth file
-  community.general.htpasswd:
-    path: "{{ prometheus_node_exporter_basicauth_file_tmp }}"
-    name: "{{ prometheus_node_exporter_basicauth_user }}"
-    password: "{{ prometheus_node_exporter_basicauth_password }}"
-  become: false
-  delegate_to: 127.0.0.1
-  when: prometheus_node_exporter_basicauth_enabled | bool
-
 - name: Ensure prometheus-node-exporter labels file is created
   ansible.builtin.template:
     src: "{{ role_path }}/templates/labels.j2"
@@ -29,28 +15,6 @@
     owner: "{{ prometheus_node_exporter_uid }}"
     group: "{{ prometheus_node_exporter_gid }}"
     mode: 0640
-
-- name: Ensure basic auth file is saved on the server
-  ansible.builtin.copy:
-    src: "{{ prometheus_node_exporter_basicauth_file_tmp }}"
-    dest: "{{ prometheus_node_exporter_basicauth_file }}"
-    owner: "{{ prometheus_node_exporter_uid }}"
-    group: "{{ prometheus_node_exporter_gid }}"
-    mode: 0640
-  when: prometheus_node_exporter_basicauth_enabled | bool
-
-- name: Ensure temporary basic auth file is removed
-  ansible.builtin.file:
-    path: "{{ prometheus_node_exporter_basicauth_file_tmp }}"
-    state: absent
-  become: false
-  delegate_to: 127.0.0.1
-  when: prometheus_node_exporter_basicauth_enabled | bool
-
-- name: Print basic auth credentials
-  debug:
-    msg: "login={{ prometheus_node_exporter_basicauth_user }} password={{ prometheus_node_exporter_basicauth_password }}"
-  when: prometheus_node_exporter_basicauth_enabled | bool and prometheus_node_exporter_basicauth_print | bool
 
 - name: Ensure prometheus-node-exporter image is pulled
   community.docker.docker_image:
