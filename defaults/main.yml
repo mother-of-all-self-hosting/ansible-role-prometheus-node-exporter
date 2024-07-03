@@ -66,7 +66,7 @@ prometheus_node_exporter_systemd_wanted_services_list: []
 # See `../templates/labels.j2` for details.
 #
 # To inject your own other container labels, see `prometheus_node_exporter_container_labels_additional_labels`.
-prometheus_node_exporter_container_labels_traefik_enabled: "{{ true if prometheus_node_exporter_hostname else false }}"
+prometheus_node_exporter_container_labels_traefik_enabled: false
 prometheus_node_exporter_container_labels_traefik_docker_network: "{{ prometheus_node_exporter_container_network }}"
 prometheus_node_exporter_container_labels_traefik_hostname: "{{ prometheus_node_exporter_hostname }}"
 # The path prefix must either be `/` or not end with a slash (e.g. `/metrics`).
