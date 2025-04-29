@@ -42,6 +42,6 @@
 
 - name: Ensure prometheus-node-exporter systemd service installed
   ansible.builtin.template:
-    src: "{{ role_path }}/templates/prometheus-node-exporter.service.j2"
+    src: "{{ role_path }}/templates/systemd/prometheus-node-exporter.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ prometheus_node_exporter_identifier }}.service"
     mode: 0644
