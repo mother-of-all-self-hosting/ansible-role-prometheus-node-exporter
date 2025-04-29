@@ -24,24 +24,24 @@ ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_s
 ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_systemd_docker_base_host_command_docker }} rm {{ prometheus_node_exporter_identifier }} 2>/dev/null || true'
 
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
-			--rm \
-			--name={{ prometheus_node_exporter_identifier }} \
-			--log-driver=none \
-			--user={{ prometheus_node_exporter_uid }}:{{ prometheus_node_exporter_gid }} \
-			--cap-drop=ALL \
-			--read-only \
-			--network={{ prometheus_node_exporter_container_network }} \
-			{% if prometheus_node_exporter_container_http_host_bind_port %}
-			-p {{ prometheus_node_exporter_container_http_host_bind_port }}:9100 \
-			{% endif %}
-			--pid=host \
-			--label-file={{ prometheus_node_exporter_base_path }}/labels \
-			--mount type=bind,src=/,dst=/host,ro,bind-propagation=rslave \
-			{% for arg in prometheus_node_exporter_container_extra_arguments %}
-			{{ arg }} \
-			{% endfor %}
-			{{ prometheus_node_exporter_container_image }} \
-			--path.rootfs=/host {{ prometheus_node_exporter_process_extra_arguments|join(' ') }}
+      --rm \
+      --name={{ prometheus_node_exporter_identifier }} \
+      --log-driver=none \
+      --user={{ prometheus_node_exporter_uid }}:{{ prometheus_node_exporter_gid }} \
+      --cap-drop=ALL \
+      --read-only \
+      --network={{ prometheus_node_exporter_container_network }} \
+      {% if prometheus_node_exporter_container_http_host_bind_port %}
+      -p {{ prometheus_node_exporter_container_http_host_bind_port }}:9100 \
+      {% endif %}
+      --pid=host \
+      --label-file={{ prometheus_node_exporter_base_path }}/labels \
+      --mount type=bind,src=/,dst=/host,ro,bind-propagation=rslave \
+      {% for arg in prometheus_node_exporter_container_extra_arguments %}
+      {{ arg }} \
+      {% endfor %}
+      {{ prometheus_node_exporter_container_image }} \
+      --path.rootfs=/host {{ prometheus_node_exporter_process_extra_arguments|join(' ') }}
 
 {% for network in prometheus_node_exporter_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ prometheus_node_exporter_identifier }}
