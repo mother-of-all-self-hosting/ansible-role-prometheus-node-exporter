@@ -4,24 +4,25 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-- name: Perform prometheus-node-exporter installation tasks
+- name: Perform Prometheus node exporter installation tasks
   tags:
     - setup-all
     - setup-prometheus-node-exporter
     - install-all
     - install-prometheus-node-exporter
   block:
-    - name: Validate prometheus-node-exporter configuration
+    - name: Validate Prometheus node exporter configuration
       when: prometheus_node_exporter_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
     - name: Install prometheus-node-exporter
       when: prometheus_node_exporter_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
-- name: Perform prometheus-node-exporter uninstallation tasks
+
+- name: Perform Prometheus node exporter uninstallation tasks
   tags:
     - setup-all
     - setup-prometheus-node-exporter
   block:
-    - name: Uninstall prometheus-node-exporter
+    - name: Uninstall Prometheus node exporter
       when: not prometheus_node_exporter_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
