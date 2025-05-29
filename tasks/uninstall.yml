@@ -9,7 +9,7 @@
     path: "{{ devture_systemd_docker_base_systemd_path }}/{{ prometheus_node_exporter_identifier }}.service"
   register: prometheus_node_exporter_service_stat
 
-- name: Ensure prometheus-node-exporter is removed
+- name: Uninstall prometheus-node-exporter systemd services and files
   when: prometheus_node_exporter_service_stat.stat.exists | bool
   block:
     - name: Ensure prometheus-node-exporter systemd service is stopped

@@ -4,12 +4,11 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 ---
-
 - name: Ensure prometheus-node-exporter base path exists
   ansible.builtin.file:
     path: "{{ prometheus_node_exporter_base_path }}"
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: "{{ prometheus_node_exporter_uid }}"
     group: "{{ prometheus_node_exporter_gid }}"
 
@@ -19,7 +18,7 @@
     dest: "{{ prometheus_node_exporter_base_path }}/labels"
     owner: "{{ prometheus_node_exporter_uid }}"
     group: "{{ prometheus_node_exporter_gid }}"
-    mode: 0640
+    mode: "0640"
 
 - name: Ensure prometheus-node-exporter image is pulled
   community.docker.docker_image:
@@ -44,4 +43,4 @@
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/prometheus-node-exporter.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ prometheus_node_exporter_identifier }}.service"
-    mode: 0644
+    mode: "0644"
