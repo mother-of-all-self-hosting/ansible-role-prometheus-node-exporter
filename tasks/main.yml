@@ -5,6 +5,7 @@
 
 ---
 - name: Perform Prometheus node exporter installation tasks
+  when: prometheus_node_exporter_enabled | bool
   tags:
     - setup-all
     - setup-prometheus-node-exporter
@@ -12,17 +13,15 @@
     - install-prometheus-node-exporter
   block:
     - name: Validate Prometheus node exporter configuration
-      when: prometheus_node_exporter_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
-    - name: Install prometheus-node-exporter
-      when: prometheus_node_exporter_enabled | bool
+    - name: Install Prometheus node exporter
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
 
 - name: Perform Prometheus node exporter uninstallation tasks
+  when: not prometheus_node_exporter_enabled | bool
   tags:
     - setup-all
     - setup-prometheus-node-exporter
   block:
     - name: Uninstall Prometheus node exporter
-      when: not prometheus_node_exporter_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
