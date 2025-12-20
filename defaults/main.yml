@@ -79,7 +79,7 @@ prometheus_node_exporter_container_labels_traefik_entrypoints: web-secure
 prometheus_node_exporter_container_labels_traefik_tls: "{{ prometheus_node_exporter_container_labels_traefik_entrypoints != 'web' }}"
 prometheus_node_exporter_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_enabled: false
-# See: https://doc.traefik.io/traefik/middlewares/http/basicauth/#users
+# See: https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/
 prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_users: ''
 
 # prometheus_node_exporter_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
@@ -92,7 +92,9 @@ prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_users: '
 prometheus_node_exporter_container_labels_additional_labels: ''
 
 # A list of extra arguments to pass to the container
-prometheus_node_exporter_container_extra_arguments: []
+prometheus_node_exporter_container_extra_arguments: "{{ prometheus_node_exporter_container_extra_arguments_auto + prometheus_node_exporter_container_extra_arguments_custom }}"
+prometheus_node_exporter_container_extra_arguments_auto: []
+prometheus_node_exporter_container_extra_arguments_custom: []
 
 # A list of extra arguments to pass to the node_exporter process
 #
