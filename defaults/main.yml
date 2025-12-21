@@ -17,11 +17,11 @@ prometheus_node_exporter_base_path: "/{{ prometheus_node_exporter_identifier }}"
 # renovate: datasource=docker depName=prom/node-exporter versioning=semver
 prometheus_node_exporter_version: v1.10.2
 
-prometheus_node_exporter_uid: ''
-prometheus_node_exporter_gid: ''
+prometheus_node_exporter_uid: ""
+prometheus_node_exporter_gid: ""
 
 # The hostname at which Prometheus node exporter is served. You don't need to configure it if you're not exposing this.
-prometheus_node_exporter_hostname: ''
+prometheus_node_exporter_hostname: ""
 
 # The path at which Prometheus node exporter is exposed. You don't need to configure it if you're not exposing this.
 # This value must either be `/` or not end with a slash.
@@ -37,7 +37,7 @@ prometheus_node_exporter_container_image_force_pull: "{{ prometheus_node_exporte
 # Controls whether the Prometheus node exporter container exposes its HTTP port (tcp/9100 in the container).
 #
 # Takes an "<ip>:<port>" value (e.g. "127.0.0.1:9100"), just a port number or empty string to not expose.
-prometheus_node_exporter_container_http_host_bind_port: ''
+prometheus_node_exporter_container_http_host_bind_port: ""
 
 # The base container network
 #
@@ -80,7 +80,7 @@ prometheus_node_exporter_container_labels_traefik_tls: "{{ prometheus_node_expor
 prometheus_node_exporter_container_labels_traefik_tls_certResolver: default  # noqa var-naming
 prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_enabled: false
 # See: https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/
-prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_users: ''
+prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_users: ""
 
 # prometheus_node_exporter_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
 # See `../templates/labels.j2` for details.
