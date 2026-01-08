@@ -1,8 +1,8 @@
-# SPDX-FileCopyrightText: 2023 - 2025 Nikita Chernyi
-# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023-2025 Nikita Chernyi
+# SPDX-FileCopyrightText: 2023-2025 Slavi Pantaleev
 # SPDX-FileCopyrightText: 2024 Sergio Durigan Junior
 # SPDX-FileCopyrightText: 2025 MASH project contributors
-# SPDX-FileCopyrightText: 2025 Suguru Hirahara
+# SPDX-FileCopyrightText: 2025, 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -128,3 +128,9 @@ prometheus_node_exporter_systemd_wanted_services_list_custom: []
 # This role doesn't make use of this variable, but you can hook this into other roles.
 prometheus_node_exporter_dashboard_urls:
   - https://raw.githubusercontent.com/rfmoz/grafana-dashboards/7998032d1c36ef6452c3a93ab326195a04ac7ebd/prometheus/node-exporter-full.json
+
+# Specify the timezone
+prometheus_node_exporter_environment_variables_tz: UTC
+
+# Additional environment variables.
+prometheus_node_exporter_environment_variables_additional_variables: ""
