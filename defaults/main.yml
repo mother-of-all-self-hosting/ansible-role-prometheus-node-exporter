@@ -34,11 +34,6 @@ prometheus_node_exporter_container_image_registry_prefix_upstream: "{{ prometheu
 prometheus_node_exporter_container_image_registry_prefix_upstream_default: "docker.io/"
 prometheus_node_exporter_container_image_force_pull: "{{ prometheus_node_exporter_container_image.endswith(':latest') }}"
 
-# Controls whether the container exposes its HTTP port (tcp/9100 in the container).
-#
-# Takes an "<ip>:<port>" value (e.g. "127.0.0.1:9100"), just a port number or empty string to not expose.
-prometheus_node_exporter_container_http_host_bind_port: ""
-
 # The base container network
 #
 # Official recommendations are to run this container with `--net=host`,
@@ -50,6 +45,11 @@ prometheus_node_exporter_container_http_host_bind_port: ""
 # because node-exporter can't see all interfaces, etc.
 # For now, we'll live with that, until someone develops a better solution.
 prometheus_node_exporter_container_network: "{{ prometheus_node_exporter_identifier }}"
+
+# Controls whether the container exposes its HTTP port (tcp/9100 in the container).
+#
+# Takes an "<ip>:<port>" value (e.g. "127.0.0.1:9100"), just a port number or empty string to not expose.
+prometheus_node_exporter_container_http_host_bind_port: ""
 
 # The port number in the container
 prometheus_node_exporter_container_http_port: 9100
