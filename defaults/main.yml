@@ -99,7 +99,7 @@ prometheus_node_exporter_container_extra_arguments: "{{ prometheus_node_exporter
 prometheus_node_exporter_container_extra_arguments_auto: []
 prometheus_node_exporter_container_extra_arguments_custom: []
 
-# A list of extra arguments to pass to the node_exporter process
+# A list of extra arguments to pass to the Prometheus Node Exporter process
 #
 # Example:
 # prometheus_node_exporter_process_extra_arguments:
@@ -110,7 +110,9 @@ prometheus_node_exporter_container_extra_arguments_custom: []
 # Running the systemd collector requires the following `prometheus_node_exporter_process_extra_arguments`:
 # - the socket to be mounted as well (`--mount type=bind,src=/var/run/dbus/system_bus_socket,dst=/var/run/dbus/system_bus_socket,ro,bind-propagation=rslave`)
 # - (on AppArmor-based distros) disabling AppArmor protection (`--security-opt apparmor=unconfined`)
-prometheus_node_exporter_process_extra_arguments: []
+prometheus_node_exporter_process_extra_arguments: "{{ prometheus_node_exporter_process_extra_arguments_auto + prometheus_node_exporter_process_extra_arguments_custom }}"
+prometheus_node_exporter_process_extra_arguments_auto: []
+prometheus_node_exporter_process_extra_arguments_custom: []
 
 # List of systemd services that Prometheus Node Exporter systemd service depends on
 prometheus_node_exporter_systemd_required_services_list: "{{ prometheus_node_exporter_systemd_required_services_list_default + prometheus_node_exporter_systemd_required_services_list_auto + prometheus_node_exporter_systemd_required_services_list_custom }}"
