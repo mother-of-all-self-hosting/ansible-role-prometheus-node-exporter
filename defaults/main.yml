@@ -77,7 +77,8 @@ prometheus_node_exporter_container_labels_metrics_docker_network: "{{ prometheus
 prometheus_node_exporter_container_labels_metrics_hostname: "{{ prometheus_node_exporter_hostname }}"
 # The path prefix must either be `/` or not end with a slash (e.g. `/metrics`).
 prometheus_node_exporter_container_labels_metrics_path_prefix: "{{ prometheus_node_exporter_path_prefix }}"
-prometheus_node_exporter_container_labels_metrics_rule: "Host(`{{ prometheus_node_exporter_container_labels_metrics_hostname }}`) && PathPrefix(`{{ prometheus_node_exporter_container_labels_metrics_path_prefix | quote }}`)"
+prometheus_node_exporter_container_labels_metrics_rule: "Host(`{{ prometheus_node_exporter_container_labels_metrics_hostname }}`){% if prometheus_node_exporter_container_labels_metrics_path_prefix != '/' %} && PathPrefix(`{{ prometheus_node_exporter_container_labels_metrics_path_prefix }}`){% endif %}"
+prometheus_node_exporter_container_labels_metrics_priority: 0
 prometheus_node_exporter_container_labels_metrics_entrypoints: web-secure
 prometheus_node_exporter_container_labels_metrics_tls: "{{ prometheus_node_exporter_container_labels_metrics_entrypoints != 'web' }}"
 prometheus_node_exporter_container_labels_metrics_tls_certResolver: default  # noqa var-naming
