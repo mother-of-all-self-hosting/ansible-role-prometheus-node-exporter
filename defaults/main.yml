@@ -68,19 +68,19 @@ prometheus_node_exporter_container_additional_networks: "{{ prometheus_node_expo
 prometheus_node_exporter_container_additional_networks_auto: []
 prometheus_node_exporter_container_additional_networks_custom: []
 
-# prometheus_node_exporter_container_labels_traefik_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
+# prometheus_node_exporter_container_labels_metrics_enabled controls whether labels to assist a Traefik reverse-proxy will be attached to the container.
 # See `../templates/labels.j2` for details.
 #
 # To inject your own other container labels, see `prometheus_node_exporter_container_labels_additional_labels_custom`.
-prometheus_node_exporter_container_labels_traefik_enabled: false
-prometheus_node_exporter_container_labels_traefik_docker_network: "{{ prometheus_node_exporter_container_network }}"
-prometheus_node_exporter_container_labels_traefik_hostname: "{{ prometheus_node_exporter_hostname }}"
+prometheus_node_exporter_container_labels_metrics_enabled: false
+prometheus_node_exporter_container_labels_metrics_docker_network: "{{ prometheus_node_exporter_container_network }}"
+prometheus_node_exporter_container_labels_metrics_hostname: "{{ prometheus_node_exporter_hostname }}"
 # The path prefix must either be `/` or not end with a slash (e.g. `/metrics`).
-prometheus_node_exporter_container_labels_traefik_path_prefix: "{{ prometheus_node_exporter_path_prefix }}"
-prometheus_node_exporter_container_labels_traefik_rule: "Host(`{{ prometheus_node_exporter_container_labels_traefik_hostname }}`) && PathPrefix(`{{ prometheus_node_exporter_container_labels_traefik_path_prefix | quote }}`)"
-prometheus_node_exporter_container_labels_traefik_entrypoints: web-secure
-prometheus_node_exporter_container_labels_traefik_tls: "{{ prometheus_node_exporter_container_labels_traefik_entrypoints != 'web' }}"
-prometheus_node_exporter_container_labels_traefik_tls_certResolver: default  # noqa var-naming
+prometheus_node_exporter_container_labels_metrics_path_prefix: "{{ prometheus_node_exporter_path_prefix }}"
+prometheus_node_exporter_container_labels_metrics_rule: "Host(`{{ prometheus_node_exporter_container_labels_metrics_hostname }}`) && PathPrefix(`{{ prometheus_node_exporter_container_labels_metrics_path_prefix | quote }}`)"
+prometheus_node_exporter_container_labels_metrics_entrypoints: web-secure
+prometheus_node_exporter_container_labels_metrics_tls: "{{ prometheus_node_exporter_container_labels_metrics_entrypoints != 'web' }}"
+prometheus_node_exporter_container_labels_metrics_tls_certResolver: default  # noqa var-naming
 prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_enabled: false
 # See: https://doc.traefik.io/traefik/reference/routing-configuration/http/middlewares/basicauth/
 prometheus_node_exporter_container_labels_metrics_middleware_basic_auth_users: ""
