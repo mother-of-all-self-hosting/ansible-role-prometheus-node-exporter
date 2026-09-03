@@ -205,7 +205,7 @@
             )
           }}
 
-    - name: Assert the running Prometheus node exporter is the version the role asks for
+    - name: Assert the running Prometheus node exporter is the version this role installs
       ansible.builtin.assert:
         that: >-
           (prometheus_node_exporter_reported_version | regex_replace('^v', ''))
