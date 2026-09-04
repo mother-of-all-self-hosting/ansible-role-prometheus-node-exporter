@@ -203,10 +203,8 @@
         that: >-
           (prometheus_node_exporter_reported_version | regex_replace('^v', ''))
           == (prometheus_node_exporter_defaults.prometheus_node_exporter_version | regex_replace('^v', ''))
-        fail_msg: >-
-          Prometheus node exporter reports version {{ prometheus_node_exporter_reported_version | default('none') }},
-          but the role asks for {{ prometheus_node_exporter_defaults.prometheus_node_exporter_version }}
-        success_msg: "Prometheus node exporter reports version {{ prometheus_node_exporter_reported_version }}"
+        fail_msg: "Prometheus node exporter reports {{ prometheus_node_exporter_reported_version | default('none') }}, expected {{ prometheus_node_exporter_defaults.prometheus_node_exporter_version }}"
+        success_msg: "Prometheus node exporter reports {{ prometheus_node_exporter_reported_version }}"
 
     - name: Show the Prometheus node exporter verification summary
       ansible.builtin.debug:
