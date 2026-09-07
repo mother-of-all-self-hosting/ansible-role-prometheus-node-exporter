@@ -173,11 +173,7 @@
           (the enabled-on-request processes collector should be present, the unrequested systemd collector absent)
         success_msg: "Prometheus node exporter runs the processes collector it was asked for, and not the systemd collector it was not"
 
-    # Tying the running version to `prometheus_node_exporter_version` is what
-    # makes this scenario a real test of the version that Renovate bumps: a
-    # bump that produces an unusable image cannot pass here.
-    #
-    # node exporter reports its version without a leading `v` (`1.12.1`), while
+    # Prometheus node exporter reports its version without a leading `v` (`1.12.1`), while
     # the role's version variable carries one. Any leading `v` is normalized
     # away on both sides, so that this keeps holding if either side ever stops
     # carrying one.
