@@ -160,7 +160,7 @@
     # asked for" apart from "asked for and broken".
     #
     # Asserting both directions is what makes the metric set evidence of the
-    # configured collector set, rather than of node exporter simply reporting
+    # configured collector set, rather than of Prometheus node exporter simply reporting
     # everything it knows how to.
     - name: Assert the collector set matches what the role was configured with
       ansible.builtin.assert:
