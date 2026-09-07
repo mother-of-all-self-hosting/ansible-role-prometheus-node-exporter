@@ -173,11 +173,6 @@
           (the enabled-on-request processes collector should be present, the unrequested systemd collector absent)
         success_msg: "Prometheus node exporter runs the processes collector it was asked for, and not the systemd collector it was not"
 
-    # Prometheus node exporter reports its version without a leading `v` (`1.12.1`), while
-    # the role's version variable carries one. Any leading `v` is normalized
-    # away on both sides, so that this keeps holding if either side ever stops
-    # carrying one.
-    #
     # The label is matched with a leading `{` or `,` so that `goversion`, which
     # sits on the same series, cannot be picked up instead.
     - name: Determine the version of the running Prometheus node exporter
@@ -194,6 +189,11 @@
             )
           }}
 
+    # `prometheus_node_exporter_version` carries a leading `v` (`v3.14.0`) but the binary
+    # reports the bare version (`3.14.0`). Any leading `v` is normalized
+    # away on both sides, so that this keeps holding if either side ever stops
+    # carrying one.
+    #
     - name: Assert the running Prometheus node exporter is the version this role installs
       ansible.builtin.assert:
         that: >-
