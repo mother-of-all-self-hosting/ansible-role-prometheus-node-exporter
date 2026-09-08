@@ -42,7 +42,7 @@
     - name: Retrieve the Prometheus node exporter systemd service log for debugging
       when: prometheus_node_exporter_debug_service_enabled | bool
       ansible.builtin.command:
-        cmd: journalctl -xeu prometheus-node-exporter.service
+        cmd: journalctl --no-pager --output=cat --unit=prometheus-node-exporter.service
       changed_when: false
 
     # A systemd unit reaching "active" only means that `docker start` has not
