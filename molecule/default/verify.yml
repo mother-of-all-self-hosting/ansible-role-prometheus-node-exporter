@@ -11,6 +11,8 @@
   gather_facts: false
 
   tasks:
+    - name: Verify that Prometheus node exporter works
+      block:
     # The role is not included in this playbook, so its defaults are not in
     # scope. Reading defaults/main.yml directly ties the version assertion
     # below.
@@ -214,3 +216,19 @@
           - "Prometheus node exporter version: {{ prometheus_node_exporter_reported_version }}"
           - "Prometheus node exporter host filesystem series: {{ prometheus_node_exporter_hostfs_series[0] }}"
           - "Prometheus node exporter textfile series: {{ prometheus_node_exporter_textfile_series[0] }}"
+
+      rescue:
+        # Whatever went wrong, the reason is almost always in the systemd service log.
+        - name: Retrieve the Prometheus node exporter systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=prometheus-node-exporter.service
+          register: prometheus_node_exporter_service_log
+          changed_when: false
+
+        - name: Show the Prometheus node exporter systemd service log
+          ansible.builtin.debug:
+            var: prometheus_node_exporter_service_log.stdout_lines
+
+        - name: Fail because verification did not pass
+          ansible.builtin.fail:
+            msg: "Prometheus node exporter verification failed. The systemd service log is printed above."
