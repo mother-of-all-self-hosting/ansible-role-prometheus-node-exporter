@@ -75,7 +75,7 @@ provisioner:
         prometheus_node_exporter_uid: 1000
         prometheus_node_exporter_gid: 1000
         prometheus_node_exporter_hostname: localhost
-        prometheus_node_exporter_container_labels_metrics_enabled: false
+        prometheus_node_exporter_container_labels_traefik_metrics_enabled: false
         prometheus_node_exporter_container_http_host_bind_port: "127.0.0.1:{{ prometheus_node_exporter_molecule_http_bind_port }}"
 
         # Both of these are off unless somebody asks for them, which is what
